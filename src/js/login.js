@@ -1,3 +1,9 @@
+// Описаний у документації
+import iziToast from 'izitoast';
+// Додатковий імпорт стилів
+import 'izitoast/dist/css/iziToast.min.css';
+import icon from '../img/javascript.svg';
+
 // ЗАДАЧА 1
 // Якщо імейл і пароль користувача збігаються, зберігай дані з форми при сабміті
 // у локальне сховище і змінюй кнопку Login на Logout і роби поля введення
@@ -8,19 +14,39 @@
 // З локального сховища.
 // Якщо введені дані не збігаються з потрібними даними, викликати аlert і
 // повідомляти про помилку.
-// const USER_DATA = {
-//   email: "user@mail.com",
-//   password: "secret",
-// };
+const USER_DATA = {
+  email: 'user@mail.com',
+  password: 'secret',
+};
+const LOCAL_KEY = 'login-form';
+const form = document.querySelector('.login-form');
+const button = document.querySelector('.login-btn');
+form.addEventListener('submit', onFormSubmit);
 
-const form = document.querySelector(".login-form");
-form.addEventListener("submit", onFormSubmit);
-
-function onFormSubmit(event){
-    event.preventDefault();
-    const { email, password } = event.target.elements;
-    const emailValue = email.value.trim();
-    const passwordValue = password.value.trim();
-    if (!emailValue || !passwordValue) return;
-    
-    }
+function onFormSubmit(event) {
+  event.preventDefault();
+  const { email, password } = event.target.elements;
+  const emailValue = email.value.trim();
+  const passwordValue = password.value.trim();
+  if (!emailValue || !passwordValue) {
+    iziToast.warning({
+      message: 'fill all fields',
+      iconUrl: icon,
+    });
+    return;
+  }
+  if (emailValue !== USER_DATA.email || passwordValue !== USER_DATA.password) {
+    iziToast.error({
+      message: 'uncorrect data',
+      iconUrl: icon,
+    });
+    return;
+  }
+  localStorage.setItem(
+    LOCAL_KEY,
+    JSON.stringify({ email: emailValue, password: passwordValue })
+  );
+  button.textContent = 'Logout';
+  email.setAttribute('readonly', true);
+  password.setAttribute('readonly', true);
+}
