@@ -21,6 +21,8 @@ const USER_DATA = {
 const LOCAL_KEY = 'login-form';
 const form = document.querySelector('.login-form');
 const button = document.querySelector('.login-btn');
+const emailEl = document.querySelector('input[name="email"]');
+const passwordEl = document.querySelector('input[name="password"]');
 form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
@@ -49,4 +51,14 @@ function onFormSubmit(event) {
   button.textContent = 'Logout';
   email.setAttribute('readonly', true);
   password.setAttribute('readonly', true);
+}
+
+const saveData = localStorage.getItem(LOCAL_KEY);
+if (saveData) {
+  const parsedData = JSON.parse(saveData);
+  emailEl.value = parsedData.email || '';
+  passwordEl.value = parsedData.password || '';
+  button.textContent = 'Logout';
+  emailEl.setAttribute('readonly', true);
+  passwordEl.setAttribute('readonly', true);
 }
