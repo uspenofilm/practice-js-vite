@@ -27,6 +27,16 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
+
+  if (button.textContent === 'Logout') {
+    form.reset();
+    localStorage.removeItem(LOCAL_KEY);
+    emailEl.removeAttribute('readonly');
+    passwordEl.removeAttribute('readonly');
+    button.textContent = 'Login';
+    return;
+  }
+
   const { email, password } = event.target.elements;
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
@@ -51,6 +61,9 @@ function onFormSubmit(event) {
   button.textContent = 'Logout';
   email.setAttribute('readonly', true);
   password.setAttribute('readonly', true);
+  iziToast.success({
+    message: 'You are logged in',
+  });
 }
 
 const saveData = localStorage.getItem(LOCAL_KEY);
